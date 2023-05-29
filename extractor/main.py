@@ -3,7 +3,7 @@
 """ EcoCor Extractor This script extracts frequencies of words from a given word list in
 text segments. As input a JSON object is passed over an API which saves the text segment
 and their IDs and optionally a URL to the word list on which basis the freqeuncies are
-extracted. It return a JSON in which for each word the frequency per text segment is
+extracted. It returns a JSON in which for each word the frequency per text segment is
 saved.
 
 Input Format: {"segments": [{"segment_id":"xyz", "text":"asd ..."}, ...], "language":"de",
@@ -11,10 +11,9 @@ Input Format: {"segments": [{"segment_id":"xyz", "text":"asd ..."}, ...], "langu
 WordList Format: [{"word":abc, "wikidata_ID":"Q12345","category":"plant"}]
 Output Format: [{"word":"xyz", "wikidata_ID":"Q12345","category":"plant",
 "overall_frequency":1234, "segment_frequencies":{segment_id:1234,...}}] 
--> only of words that appear at least once
-in the text
+-> only of words that appear at least once in the text
 
-This sripts requires `spacy` and `FastAPI` to be installed. Additionally the spacy models
+This scripts requires `spacy` and `FastAPI` to be installed. Additionally the spacy models
 for English and German must be downloaded: `de_core_news_sm`, `en_core_web_sm` """
 
 import sys
