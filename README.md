@@ -20,7 +20,7 @@ This scripts requires `spacy` and `FastAPI` to be installed. Additionally the sp
 for English and German must be downloaded: `de_core_news_sm`, `en_core_web_sm` 
 
 ### Test
-The script was tested using (uvicorn)[https://fastapi.tiangolo.com/lo/#installation].
+The script was tested using [uvicorn](https://fastapi.tiangolo.com/lo/#installation).
 Unittests are provided in `test/` and can be executed with `python -m unittest test/test_extractor.py`
 The following curl command can be used to post a JSON file to the extractor service:
 `curl -X POST -H "Content-Type: application/json" 127.0.0.1:8000/extractor --data-binary @test/test.json`. The items in the response should match `test/result.json`.
