@@ -19,6 +19,9 @@ It is required that the keys in the Input and the WordList are as below:
 This scripts requires `spacy` and `FastAPI` to be installed. Additionally the spacy models
 for English and German must be downloaded: `de_core_news_sm`, `en_core_web_sm` 
 
+`python3 -m spacy download de_core_news_sm`
+`python3 -m spacy download en_core_web_sm`
+
 ### Test
 The script was tested using [uvicorn](https://fastapi.tiangolo.com/lo/#installation).
 Unittests are provided in `test/` and can be executed with `python -m unittest test/test_extractor.py`
