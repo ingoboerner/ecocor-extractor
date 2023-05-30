@@ -4,11 +4,6 @@ from flask import jsonify, request, send_from_directory
 from extractor.main import process_text, SegmentWordListUrl, WordInfoFrequency
 from pydantic_collections import BaseCollectionModel
 
-
-class FrequencyCollection(BaseCollectionModel[WordInfoFrequency]):
-    pass
-
-
 # Version of the EcoCor Extractor Service
 service_version = "0.0.1"
 
@@ -63,6 +58,11 @@ def get_info():
     return jsonify(response_data)
 
 
+# Need this to serialize the results returned by the process_text function
+class FrequencyCollection(BaseCollectionModel[WordInfoFrequency]):
+    pass
+
+
 @api.route("/extract", methods=["POST"])
 def extract():
     """Extract word frequencies from segment data based on a wordlist.
@@ -80,7 +80,7 @@ def extract():
                     example: {"segments": [{"segment_id": "P0", "text": "Ein Chow-Chow geht nach Hause."}, {"segment_id": "P1", "text": "Chow-Chow, Dalmatiner, Wetterhoun und Dalmatiner verstehen sich nicht gut."}, {"segment_id": "P2", "text": "Ein Dobermann, noch ein Dobermann und ein Shubunkin m\u00f6gen sich."}, {"segment_id": "P3", "text": "So viele Tiere!"}, {"segment_id": "P4", "text": "Wir gehen an den Strand \u2013 alleine."}], "language": "de", "word_list": {"url": "https://raw.githubusercontent.com/dh-network/ecocor-extractor/main/word_list/organisms_known_by_common_name.json"}}
         responses:
             200:
-                description: Success!
+                description: Word frequencies per segment.
 
     """
     data = SegmentWordListUrl.parse_obj(request.json)
