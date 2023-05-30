@@ -1,6 +1,6 @@
 import os
 import flask
-from flask import jsonify, request
+from flask import jsonify, request, send_from_directory
 from extractor.main import process_text
 
 # Version of the EcoCor Extractor Service
@@ -33,10 +33,8 @@ api.config["JSON_AS_ASCII"] = False
 @api.route("/", methods=["GET"])
 def swagger_ui():
     """Displays the OpenAPI Documentation of the API
-    TODO: implement
     """
-    # return send_from_directory("static/swagger-ui", "index.html")
-    return jsonify("OK")
+    return send_from_directory("static/swagger-ui", "index.html")
 
 
 @api.route("/info", methods=["GET"])
@@ -64,8 +62,26 @@ def extract():
     """Extract word frequencies from segment data based on a wordlist.
 
     Processes the text with the process_text function of the extractor module.
+    ---
+    post:
+        summary: Extract Word Frequencies
+        operationId: extract
+        requestBody:
+            content:
+                application/json:
+                    schema:
+                        type: object
+                    example: {"segments": [{"segment_id": "P0", "text": "Ein Chow-Chow geht nach Hause."}, {"segment_id": "P1", "text": "Chow-Chow, Dalmatiner, Wetterhoun und Dalmatiner verstehen sich nicht gut."}, {"segment_id": "P2", "text": "Ein Dobermann, noch ein Dobermann und ein Shubunkin m\u00f6gen sich."}, {"segment_id": "P3", "text": "So viele Tiere!"}, {"segment_id": "P4", "text": "Wir gehen an den Strand \u2013 alleine."}], "language": "de", "word_list": {"url": "https://raw.githubusercontent.com/dh-network/ecocor-extractor/main/word_list/organisms_known_by_common_name.json"}}
+        responses:
+            200:
+                description: Success!
+
     """
-    result = process_text(request.data)
+    # Get the JSON from the request body and process with the process_text from the extractor module
+    request_body = request.json
+    assert "word_list" in request_body, "No word list provided."
+
+    result = process_text(request_body)
 
     return jsonify(result)
 
