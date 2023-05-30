@@ -2,7 +2,7 @@
 
 """ EcoCor Extractor This script extracts frequencies of words from a given word list in
 text segments. As input a JSON object is passed over an API which saves the text segment
-and their IDs and optionally a URL to the word list on which basis the freqeuncies are
+and their IDs and optionally a URL to the word list on which basis the frequencies are
 extracted. It returns a JSON in which for each word the frequency per text segment is
 saved.
 
