@@ -13,7 +13,7 @@ Output Format: [{"word":"xyz", "wikidata_ID":"Q12345","category":"plant",
 "overall_frequency":1234, "segment_frequencies":{segment_id:1234,...}}] 
 -> only of words that appear at least once in the text
 
-This scripts requires `spacy` and `FastAPI` to be installed. Additionally the spacy models
+This scripts requires `spacy` to be installed. Additionally the spacy models
 for English and German must be downloaded: `de_core_news_sm`, `en_core_web_sm` """
 
 import sys
@@ -23,10 +23,7 @@ from collections import Counter
 from enum import Enum
 
 import spacy
-from fastapi import FastAPI
 from pydantic import BaseModel
-
-app = FastAPI()
 
 
 class Language(str, Enum):
@@ -62,11 +59,6 @@ class SegmentWordListUrl(BaseModel):
     language: Language
 
 
-@app.get("/")
-def root():
-    return {"service": "ecocor-extractor", "version": "0.0.0"}
-
-
 # TODO: handle exception nicer?
 def read_word_list(url: str) -> list[WordInfo]:
     response = requests.get(url)
@@ -95,7 +87,6 @@ def setup_analysis_components(language: Language):
 # can we get a list here? or hug magic
 # language should be in ?language=de and should be read automatically here
 # how is the resouce url (word list) passed?
-@app.post("/extractor")
 def process_text(segments_word_list: SegmentWordListUrl) -> list[WordInfoFrequency]:
     word_list = read_word_list(segments_word_list.word_list.url)
     word_to_word_info = {}
@@ -152,18 +143,3 @@ def process_text(segments_word_list: SegmentWordListUrl) -> list[WordInfoFrequen
                 )
             )
     return result
-
-
-if __name__ == "__main__":
-    args = sys.argv
-    if len(args) != 2:
-        print(f"usage: {args[0]} path/to/test/file")
-        exit(-1)
-    import json
-
-    with open(args[1]) as json_in:
-        segments = json.load(json_in)
-    segments_word_list = SegmentWordListUrl(**segments)
-
-    result = process_text(segments_word_list)
-    print(result)
