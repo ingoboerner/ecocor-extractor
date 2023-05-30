@@ -1,7 +1,13 @@
 import os
 import flask
 from flask import jsonify, request, send_from_directory
-from extractor.main import process_text
+from extractor.main import process_text, SegmentWordListUrl, WordInfoFrequency
+from pydantic_collections import BaseCollectionModel
+
+
+class FrequencyCollection(BaseCollectionModel[WordInfoFrequency]):
+    pass
+
 
 # Version of the EcoCor Extractor Service
 service_version = "0.0.1"
@@ -77,13 +83,10 @@ def extract():
                 description: Success!
 
     """
-    # Get the JSON from the request body and process with the process_text from the extractor module
-    request_body = request.json
-    assert "word_list" in request_body, "No word list provided."
-
-    result = process_text(request_body)
-
-    return jsonify(result)
+    data = SegmentWordListUrl.parse_obj(request.json)
+    word_frequency_results = process_text(data)
+    collection = FrequencyCollection(word_frequency_results)
+    return collection.json()
 
 
 # Run the Service:
