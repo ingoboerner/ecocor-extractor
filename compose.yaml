@@ -1,0 +1,9 @@
+name: ecocor-extractor
+services:
+  api:
+    build:
+      context: .
+    ports:
+      - "5005:5005"
+    expose:
+      - "5005"

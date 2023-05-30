@@ -56,5 +56,5 @@ paths:
                 url: https://raw.githubusercontent.com/dh-network/ecocor-extractor/main/word_list/organisms_known_by_common_name.json
       responses:
         '200':
-          description: Success!
+          description: Word frequencies per segment.
 openapi: 3.0.3
