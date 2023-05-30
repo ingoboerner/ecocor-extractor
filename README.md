@@ -1,5 +1,7 @@
 # ecocor-extractor
 
+**The flask-version is deprecated, use the original repo instead**
+
 ### Description
 This repository hosts a script which extracts frequencies of words from a given word list in
 text segments. As input a JSON object is passed over an API which saves the text segment
