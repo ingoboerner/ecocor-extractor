@@ -1,6 +1,6 @@
 name: ecocor-extractor
 services:
-  api:
+  extractor:
     build:
       context: .
     ports:
